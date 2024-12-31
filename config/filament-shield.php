@@ -72,10 +72,12 @@ return [
         ],
 
         'widgets' => [
-            'AccountWidget', 'FilamentInfoWidget',
+            'AccountWidget',
+            'FilamentInfoWidget',
         ],
-
-        'resources' => [],
+        'resources' => [
+            \App\Filament\Resources\TransactionDetailResource::class
+        ],
     ],
 
     'discovery' => [

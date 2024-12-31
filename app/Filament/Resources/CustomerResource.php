@@ -35,6 +35,7 @@ class CustomerResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('npwp')
                             ->required()
+                            ->numeric()
                             ->maxLength(100),
                         Forms\Components\TextInput::make('name')
                             ->required()

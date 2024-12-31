@@ -36,6 +36,7 @@ class SupplierResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('npwp')
                             ->required()
+                            ->numeric()
                             ->maxLength(100),
                         Forms\Components\TextInput::make('name')
                             ->required()
@@ -48,7 +49,6 @@ class SupplierResource extends Resource
                             ->tel()
                             ->required()
                             ->maxLength(20),
-
                     ])
                     ->columns(2),
                 Section::make("Informasi Alamat")
