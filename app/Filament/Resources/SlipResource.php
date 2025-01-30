@@ -25,128 +25,111 @@ class SlipResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document';
 
     public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Section::make("Informasi Slip")
-                    ->schema([
-                        Forms\Components\TextInput::make('slip_code')
-                            ->required()
-                            ->unique(Slip::class, 'slip_code')
-                            ->default(function () {
-                                return 'SLP-001';
-                            })
-                            ->maxLength(255)
-                            ->label('Kode Slip'),
-                        Forms\Components\TextInput::make('plat_number')
-                            ->required()
-                            ->maxLength(255)
-                            ->label('Nomor Plat'),
-                        Forms\Components\TextInput::make('driver_name')
-                            ->required()
-                            ->maxLength(255)
-                            ->label('Nama Pemilik Kendaraan'),
-                        Forms\Components\TextInput::make('delivery_order')
-                            ->required()
-                            ->maxLength(255)
-                            ->label('Nomor Delivery Order'),
-                        Forms\Components\TextInput::make('bruto_muat')
-                            ->required()
-                            ->minValue(0)
-                            ->step(0.01)
-                            ->label('Bruto Muat'),
-                        Forms\Components\TextInput::make('tara_muat')
-                            ->required()
-                            ->minValue(0)
-                            ->step(0.01)
-                            ->label('Tara Muat'),
-                        Forms\Components\TextInput::make('bruto_bongkar')
-                            ->required()
-                            ->minValue(0)
-                            ->step(0.01)
-                            ->label('Bruto Bongkar'),
-                        Forms\Components\TextInput::make('tara_bongkar')
-                            ->required()
-                            ->minValue(0)
-                            ->step(0.01)
-                            ->label('Tara Bongkar'),
-                        Forms\Components\DatePicker::make('date_slip')
-                            ->required()
-                            ->default(now())
-                            ->label('Tanggal Slip'),
-                    ])->columns(3),
-                Section::make("Relasi Data")
-                    ->schema([
-                        Forms\Components\Select::make('transaction_id')
-                            ->required()
-                            ->relationship('transaction', 'id')
-                            ->searchable()
-                            ->preload()
-                            ->label('Transaksi'),
-                        Forms\Components\Select::make('customer_id')
-                            ->required()
-                            ->relationship('customer', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->label('Konsumen'),
-                    ])->columns(2)
-            ]);
-    }
+{
+    return $form
+        ->schema([
+            Section::make("Informasi Slip")
+                ->schema([
+                    Forms\Components\TextInput::make('slip_code')
+                        ->disabled() // Tidak bisa diubah
+                        ->maxLength(255)
+                        ->label('Kode Slip'),
+                    Forms\Components\TextInput::make('plat_number')
+                        ->required()
+                        ->maxLength(255)
+                        ->label('Nomor Plat'),
+                    Forms\Components\TextInput::make('driver_name')
+                        ->required()
+                        ->maxLength(255)
+                        ->label('Supir'),
+                    Forms\Components\TextInput::make('delivery_order')
+                        ->required()
+                        ->maxLength(255)
+                        ->label('Nomor Delivery Order'),
+                    Forms\Components\TextInput::make('bruto_muat')
+                        ->required()
+                        ->minValue(0)
+                        ->step(0.01)
+                        ->label('Bruto Muat'),
+                    Forms\Components\TextInput::make('tara_muat')
+                        ->required()
+                        ->minValue(0)
+                        ->step(0.01)
+                        ->label('Tara Muat'),
+                    Forms\Components\TextInput::make('bruto_bongkar')
+                        ->required()
+                        ->minValue(0)
+                        ->step(0.01)
+                        ->label('Bruto Bongkar'),
+                    Forms\Components\TextInput::make('tara_bongkar')
+                        ->required()
+                        ->minValue(0)
+                        ->step(0.01)
+                        ->label('Tara Bongkar'),
+                    Forms\Components\DatePicker::make('date_slip')
+                        ->required()
+                        ->default(now())
+                        ->label('Tanggal Slip'),
+                    Forms\Components\Select::make('customer_id')
+                        ->required()
+                        ->relationship('customer', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->label('Konsumen'),
+                ])->columns(3),
+        ]);
+}
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('slip_code')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('plat_number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('driver_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('delivery_order')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('bruto_muat')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tara_muat')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('bruto_bongkar')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tara_bongkar')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('date_slip')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('transaction.id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('customer.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
+
+public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('slip_code')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('plat_number')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('driver_name')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('delivery_order')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('bruto_muat')
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('tara_muat')
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('bruto_bongkar')
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('tara_bongkar')
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('date_slip')
+                ->date()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('customer.name')
+                ->label('Konsumen')
+                ->sortable(),
+            Tables\Columns\BooleanColumn::make('is_invoiced')
+                ->label('Sudah Diinvoicekan?')
+                ->sortable(),
+        ])
+        ->filters([
+            Tables\Filters\Filter::make('is_invoiced')
+                ->query(fn (Builder $query) => $query->where('is_invoiced', true))
+                ->label('Sudah Diinvoicekan'),
+        ])
+        ->actions([
+            Tables\Actions\EditAction::make()
+                ->hidden(fn (Slip $record) => $record->is_invoiced), // Cegah edit jika diinvoicekan
+        ])
+        ->bulkActions([
+            Tables\Actions\DeleteBulkAction::make()
+                ->hidden(fn (Slip $record) => $record->is_invoiced), // Cegah hapus jika diinvoicekan
+        ]);
+}
+
 
     public static function getRelations(): array
     {
